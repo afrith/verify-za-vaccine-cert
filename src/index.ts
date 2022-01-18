@@ -53,15 +53,18 @@ export const checkCertFormat = (qrcode: string): VerifyResult => {
   }
 }
 
-export const verifyCert = async (qrcode: string): Promise<VerifyResult> => {
+interface VerifyOptions {
+  endpointUrl?: string
+}
+
+export const verifyCert = async (qrcode: string, options?: VerifyOptions): Promise<VerifyResult> => {
   const validity = checkCertFormat(qrcode)
   if (!validity.valid) {
     return validity
   }
-
   const { kid, hash } = validity.qrcode
   const response = await fetch(
-    'https://vaccine.certificate.health.gov.za/ms/rs/verification/verify2_0/',
+    options?.endpointUrl ?? 'https://vaccine.certificate.health.gov.za/ms/rs/verification/verify2_0/',
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

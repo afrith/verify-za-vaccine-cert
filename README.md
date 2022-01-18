@@ -5,8 +5,6 @@ certificates issued by the [South African COVID-19 Vaccine Certificate
 System](https://vaccine.certificate.health.gov.za/). It is an implementation of
 the algorithm described in the [VCS Verification API Specification, Version
 1.0](https://sacoronavirus.b-cdn.net/wp-content/uploads/2021/12/Vaccine-Certificate-System-Verification-API-Specification-002.pdf).
-It works in Node.js and in the browser, but I have not tested it on older
-versions of Node or older browsers.
 
 The current vaccine certificates do not incorporate a digital signature.
 They can only be verified by calling the Public VCS Verification API
@@ -15,6 +13,11 @@ It is therefore not possible to validate certificates when offline.
 For offline use this library does provide a function that checks the format of
 a certificate without validating it through the API,
 but this will not detect sophisticated forgeries.
+
+This library works in both Node.js and in the browser. However, the VCS API
+currently does not set the necessary CORS headers, so you can't call it
+directly from browser code. You will have to proxy the requests through your
+own server, for which see the `endpointUrl` option described below.
 
 Note that the verification API specification indicates that it has is a limit
 of 30 requests per IP address per second.
@@ -68,11 +71,14 @@ The value of `result.cert` in this case is:
 
 ### Verify a certificate (online)
 ```js
-const result = await verifyCert(qrcode)
+const result = await verifyCert(qrcode, { endpointUrl: '...' })
 ```
-The single parameter `qrcode` must be a string containing the data as scanned
-from the QR code on the certificate. If the certificate is valid the result
-will have the form:
+The parameter `qrcode` must be a string containing the data as scanned
+from the QR code on the certificate. If `endpointUrl` is set then the
+verification request will be sent to that URL instead of the public VCS
+endpoint.
+
+If the certificate is valid the result will have the form:
 ```js
 {
   valid: true,
@@ -104,8 +110,8 @@ as required.
 ```js
 const result = checkCertFormat(qrcode)
 ```
-This function's signature is the same as `verifyCert`, except that it is
-synchronous so the result is returned directly and not through a Promise.
+The result of this function takes the same format as that of `verifyCert`,
+except that it is returned synchronously and not through a Promise.
 
 ## License
 This library is released under the MIT License. See `LICENSE` for more details.
