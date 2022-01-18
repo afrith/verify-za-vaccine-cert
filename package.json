@@ -2,6 +2,15 @@
   "name": "verify-za-vaccine-cert",
   "version": "0.1.0",
   "description": "Verifies the validity of a South African digital COVID-19 certificate.",
+  "keywords": [
+    "vaccine",
+    "vax",
+    "vaccine certificate",
+    "vaccine cert",
+    "south africa",
+    "covid",
+    "vcs"
+  ],
   "main": "index.js",
   "scripts": {
     "prepack": "tsc",
@@ -13,6 +22,7 @@
   ],
   "author": "Adrian Frith <adrian@frith.dev>",
   "license": "MIT",
+  "repository": "github:afrith/verify-za-vaccine-cert",
   "dependencies": {
     "cross-fetch": "^3.1.4",
     "crypto-js": "^4.1.1"
