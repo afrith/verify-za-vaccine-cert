@@ -1,6 +1,6 @@
 # verify-za-vaccine-cert
 
-![npm](https://img.shields.io/npm/v/verify-za-vaccine-cert)
+[![npm](https://img.shields.io/npm/v/verify-za-vaccine-cert)](https://www.npmjs.com/package/verify-za-vaccine-cert)
 
 This is a TypeScript/JavaScript library which verifies the QR codes of
 certificates issued by the [South African COVID-19 Vaccine Certificate
