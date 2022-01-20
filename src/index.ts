@@ -1,4 +1,4 @@
-import fetch from 'cross-fetch'
+import fetch, { Response } from 'cross-fetch'
 import { SHA256, enc } from 'crypto-js'
 
 interface Success {
@@ -63,14 +63,20 @@ export const verifyCert = async (qrcode: string, options?: VerifyOptions): Promi
     return validity
   }
   const { kid, hash } = validity.qrcode
-  const response = await fetch(
-    options?.endpointUrl ?? 'https://vaccine.certificate.health.gov.za/ms/rs/verification/verify2_0/',
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ kid, hash })
-    }
-  )
+  let response: Response
+
+  try {
+    response = await fetch(
+      options?.endpointUrl ?? 'https://vaccine.certificate.health.gov.za/ms/rs/verification/verify2_0/',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kid, hash })
+      }
+    )
+  } catch (err) {
+    return { valid: false, reason: VerificationError.ApiBadResponse }
+  }
 
   if (!response.ok) {
     return { valid: false, reason: VerificationError.ApiBadResponse }
