@@ -1,6 +1,6 @@
 {
   "name": "verify-za-vaccine-cert",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Verifies the validity of a South African digital COVID-19 certificate.",
   "keywords": [
     "vaccine",
